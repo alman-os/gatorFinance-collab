@@ -1,73 +1,77 @@
 <p align="center">
-  <img src="icon_gatorFinance.png" width="112" alt="gatorFinance app icon">
+  <img src="icon_gatorFinance.png" width="112" alt="Ícono de la app gatorFinance">
 </p>
 
 # gatorFinance
 
-Local-first macOS finance analysis from your OFX exports.
+<p align="center">
+  <img src="GTRF_3-2_spa.png" width="1448" alt="Interfaz de gatorFinance">
+</p>
 
-Import statements, correct the categorization, inspect monthly cash flow, and save privacy-safe `gatorHealth` reports without connecting a bank account or uploading your transaction history.
+Análisis financiero local para macOS a partir de tus archivos OFX.
 
-> **Alpha:** validate important figures against your statements. `gatorHealth` is a directional signal, not financial advice.
+Importa estados de cuenta, corrige la categorización, revisa el flujo de caja mensual y guarda reportes financieros `gatorHealth` diseñados para proteger tu privacidad, sin conectar una cuenta bancaria ni subir tu historial de transacciones.
 
-## Table of Contents
+> **Alpha:** verifica las cifras importantes directamente con tus estados de cuenta. `gatorHealth` es una señal orientativa, no asesoría financiera.
 
-- [What Does This Do](#what-does-this-do)
-- [Installation](#installation)
-- [Usage](#usage)
-- [What Can You Do With This](#what-can-you-do-with-this)
-- [Privacy](#privacy)
-- [Tech Details](#tech-details)
-- [Development](#development)
-- [Contributing](#contributing)
-- [License](#license)
+## Tabla de contenidos
 
-## What Does This Do
+* [¿Qué hace?](#qué-hace)
+* [Instalación](#instalación)
+* [Uso](#uso)
+* [¿Qué puedes hacer con gatorFinance?](#qué-puedes-hacer-con-gatorfinance)
+* [Privacidad](#privacidad)
+* [Detalles técnicos](#detalles-técnicos)
+* [Desarrollo](#desarrollo)
+* [Contribuciones](#contribuciones)
+* [Licencia](#licencia)
 
-- Imports one or more OFX statements by file picker or drag and drop.
-- Stores money as integer minor units in a local SQLite database.
-- Previews every OFX import before writing and routes it to a durable account profile.
-- Deduplicates provider transaction IDs within each account, skips identical reimports, and holds changed payloads as conflicts.
-- Supports multiple accounts at the same bank, including accounts with the same visible last four digits.
-- Keeps dashboards and reports scoped to one account or one currency at a time.
-- Normalizes vendor names and categorizes credits and debits with inspectable rules.
-- Preserves category, vendor, note, tag, and score-exclusion overrides.
-- Excludes internal transfers from income, expenses, and `gatorHealth`.
-- Shows monthly net flow, score components, and expense category totals.
-- Saves strict `.gatorfinance.json` summary reports under the common AOS output root.
-- Copies, reveals, imports, and moves saved reports to Trash from the Library.
-- Previews the exact privacy-safe summary before opening ChatGPT or Claude.
-- Switches the full interface between English and Spanish without restarting.
-- Provides persistent dark, light, and system themes plus a header quick toggle.
-- Saves deterministic Smart Lists for a merchant or income source, direction, account, category, tag, date, and amount range.
-- Detects the previous `~/.gatorfinance/db` beta store but never imports it automatically.
+## ¿Qué hace?
 
-## Installation
+* Importa uno o varios estados de cuenta OFX mediante el selector de archivos o arrastrándolos a la aplicación.
+* Almacena los importes monetarios como unidades menores enteras dentro de una base de datos SQLite local.
+* Previsualiza cada importación OFX antes de escribirla en la base de datos y la asigna a un perfil de cuenta persistente.
+* Deduplica los identificadores de transacción proporcionados por el banco dentro de cada cuenta, omite reimportaciones idénticas y conserva como conflictos aquellas cuyo contenido haya cambiado.
+* Admite varias cuentas del mismo banco, incluso cuando comparten los mismos últimos cuatro dígitos visibles.
+* Mantiene los paneles y reportes limitados a una cuenta o moneda a la vez.
+* Normaliza los nombres de comercios y categoriza créditos y débitos mediante reglas inspeccionables.
+* Conserva las modificaciones manuales de categoría, comercio, nota, etiquetas y exclusión del puntaje.
+* Excluye las transferencias internas del cálculo de ingresos, gastos y `gatorHealth`.
+* Muestra el flujo neto mensual, los componentes del puntaje y los totales de gastos por categoría.
+* Guarda reportes resumidos estrictos en formato `.gatorfinance.json` dentro de la ubicación común de salida de AOS.
+* Permite copiar, mostrar en Finder, importar y mover reportes guardados a la Papelera desde **Library**.
+* Muestra una vista previa exacta del resumen diseñado para proteger tu privacidad antes de abrir ChatGPT o Claude.
+* Permite cambiar toda la interfaz entre inglés y español sin reiniciar la aplicación.
+* Incluye temas persistentes oscuro, claro y del sistema, además de un selector rápido en el encabezado.
+* Permite guardar **Smart Lists** deterministas según comercio o fuente de ingresos, dirección de la transacción, cuenta, categoría, etiqueta, fecha y rango de importes.
+* Detecta el almacenamiento beta anterior ubicado en `~/.gatorfinance/db`, pero nunca lo importa automáticamente.
 
-### macOS alpha
+## Instalación
 
-**Requires:** macOS 12 or newer. The universal build supports Apple Silicon and Intel Macs.
+### Alpha para macOS
 
-1. Download [gatorFinance 0.4.0-alpha.4](https://github.com/alman-os/gatorFinance-collab/releases/download/v0.4.0-alpha.4/gatorFinance_0.4.0-alpha.4_macOS-universal_notarized.dmg).
-2. Open the DMG and drag `gatorFinance` to Applications.
-3. Launch `gatorFinance` and choose one or more `.ofx` files.
+**Requiere:** macOS 12 o posterior. La compilación universal es compatible con Macs Apple Silicon e Intel.
 
-The release DMG is Developer ID signed, notarized, and stapled. A checksum is published beside it:
+1. Descarga [gatorFinance 0.4.0-alpha.4](https://github.com/alman-os/gatorFinance-collab/releases/download/v0.4.0-alpha.4/gatorFinance_0.4.0-alpha.4_macOS-universal_notarized.dmg).
+2. Abre el DMG y arrastra `gatorFinance` a Aplicaciones.
+3. Abre `gatorFinance` y selecciona uno o varios archivos `.ofx`.
+
+El DMG de la versión está firmado con Developer ID, notarizado y grapado (*stapled*). Junto a él se publica un checksum:
 
 ```bash
 cd ~/Downloads
 shasum -a 256 -c gatorFinance_0.4.0-alpha.4_macOS-universal_notarized.dmg.sha256
 ```
 
-**Download not found:** alpha artifacts appear on the [Releases page](https://github.com/alman-os/gatorFinance/releases) when published. Build from source in the meantime.
+**No se encuentra la descarga:** los artefactos alpha aparecen en la [página de Releases](https://github.com/alman-os/gatorFinance/releases) cuando son publicados. Mientras tanto, puedes compilar la aplicación desde el código fuente.
 
-**No transactions imported:** confirm the export is OFX, not CSV, QFX, PDF, or an HTML download from the bank portal.
+**No se importaron transacciones:** confirma que el archivo exportado sea OFX y no CSV, QFX, PDF o una página HTML descargada desde el portal del banco.
 
-**Older beta data:** first launch detects `~/.gatorfinance/db` and leaves it untouched. Import current OFX exports to create a clean ledger; beta data is never restored automatically.
+**Datos de una beta anterior:** durante el primer inicio, gatorFinance detecta `~/.gatorfinance/db` y lo deja intacto. Importa nuevamente tus archivos OFX actuales para crear un registro limpio; los datos beta nunca se restauran automáticamente.
 
-### Build from source
+### Compilar desde el código fuente
 
-Install Node.js 22+, pnpm, Rust stable, and the Xcode command line tools.
+Instala Node.js 22+, pnpm, Rust estable y las herramientas de línea de comandos de Xcode.
 
 ```bash
 git clone https://github.com/alman-os/gatorFinance-collab.git
@@ -76,131 +80,39 @@ pnpm install
 pnpm tauri dev
 ```
 
-## Usage
+## Uso
 
-1. Click **Import OFX** or drop statements onto the window.
-2. Confirm the account profile when a new account is detected. Later exports with the same OFX identity route automatically.
-3. Use the account selector to view one account or all accounts in the selected currency.
-4. Review the score, monthly net flow, score components, and category totals in **Overview**.
-5. Open **Transactions** to search the ledger or correct a category, vendor, note, tags, or score exclusion.
-6. Open **Smart Lists** to save a live, rule-based view such as Amazon debits this year or credits from one payer.
-7. Return to **Overview** and click **Save Report**.
-8. Use **Library** to inspect, copy, reveal, import, share, or move a report to Trash.
+1. Haz clic en **Import OFX** o arrastra tus estados de cuenta a la ventana.
+2. Confirma el perfil de cuenta cuando se detecte una cuenta nueva. Las exportaciones posteriores con la misma identidad OFX se asignarán automáticamente.
+3. Usa el selector de cuentas para ver una sola cuenta o todas las cuentas de la moneda seleccionada.
+4. Revisa el puntaje, flujo neto mensual, componentes del puntaje y totales por categoría dentro de **Overview**.
+5. Abre **Transactions** para buscar dentro del registro o corregir una categoría, comercio, nota, etiquetas o exclusión del puntaje.
+6. Abre **Smart Lists** para guardar una vista dinámica basada en reglas, como débitos de Amazon durante este año o créditos provenientes de un pagador específico.
+7. Regresa a **Overview** y haz clic en **Save Report**.
+8. Usa **Library** para inspeccionar, copiar, mostrar en Finder, importar, compartir o mover un reporte a la Papelera.
 
-### Account identity and repeat imports
+### Identidad de cuentas e importaciones repetidas
 
-gatorFinance matches accounts using a versioned fingerprint of the institution and full OFX account identifier. The interface exposes only the masked suffix. A first import creates a named profile; the same account is recognized on later imports even if the profile is renamed.
+gatorFinance identifica las cuentas mediante una huella digital versionada compuesta por la institución y el identificador OFX completo de la cuenta. La interfaz únicamente muestra el sufijo enmascarado. La primera importación crea un perfil con nombre; la misma cuenta será reconocida en importaciones posteriores incluso si el perfil cambia de nombre.
 
-Within a profile, `FITID` is the provider transaction ID. The importer compares a second payload fingerprint built from the signed minor-unit amount, date, reference, and memo:
+Dentro de cada perfil, `FITID` representa el identificador de transacción proporcionado por el proveedor. El importador lo compara con una segunda huella digital del contenido construida a partir del importe firmado en unidades menores, la fecha, referencia y memo:
 
-- the same `FITID` and payload is reported as an already imported duplicate;
-- the same `FITID` with a changed payload is retained as a conflict and does not overwrite the ledger;
-- the same `FITID` in a different account is a separate transaction.
+* el mismo `FITID` con el mismo contenido se identifica como una transacción ya importada;
+* el mismo `FITID` con contenido modificado se conserva como un conflicto y no sobrescribe el registro;
+* el mismo `FITID` dentro de una cuenta diferente se considera una transacción independiente.
 
-Every import produces a receipt, including files that contain only duplicates. Files without a reliable account identity require an explicit account choice.
+Cada importación genera un recibo, incluso cuando el archivo contiene únicamente duplicados. Los archivos que no incluyen una identidad de cuenta confiable requieren que selecciones una cuenta explícitamente.
 
 ### Smart Lists
 
-Smart Lists use inspectable rules and do not call an AI service. Source matching is case- and accent-insensitive, and supports contains, exact, or starts-with matching. Optional predicates cover credit/debit direction, account profiles, category, tag, dates, and amount range. Lists update whenever newly imported transactions match their saved rule.
+Las **Smart Lists** utilizan reglas inspeccionables y no llaman a ningún servicio de IA. La coincidencia de fuentes ignora mayúsculas, minúsculas y acentos, y permite buscar mediante coincidencia parcial, exacta o por inicio de texto.
 
-### Report library
+Los filtros opcionales incluyen dirección crédito/débito, perfiles de cuenta, categoría, etiqueta, fechas y rango de importes. Las listas se actualizan automáticamente cuando nuevas transacciones importadas coinciden con las reglas guardadas.
 
-Shareable reports are written to:
+### Biblioteca de reportes
 
-```text
-~/Documents/AOS/gatorFinance/<title>.gatorfinance.json
-```
-
-Each report contains a schema version, artifact ID, source app, engine version, currency, period, privacy marker, health summary, and category totals. It does not contain account IDs, card masks, raw memos, or individual transactions.
-
-### Appearance
-
-Use the Sun/Moon control in the header for a quick light or dark switch. Open **Settings** to choose dark, light, or system appearance.
-
-Use **EN / ES** in the header to switch the complete interface between English and Spanish. Theme and language choices persist locally.
-
-## What Can You Do With This
-
-- Audit a year of bank exports without granting account access to another service.
-- Correct rule-based categories while keeping the original imported values intact.
-- Find spending changes and recurring commitments month by month.
-- Exclude reimbursements or unusual entries from the score without deleting them.
-- Keep versioned financial-health snapshots for personal review.
-- Share aggregate context with an AI provider without sharing the transaction ledger.
-- Inspect or extend the parser and scoring engine from source.
-
-## Privacy
-
-gatorFinance has no telemetry, hosted database, or bank integration. OFX parsing, normalization, categorization, storage, and scoring run on your Mac.
-
-The internal database is stored at:
+Los reportes que pueden compartirse se guardan en:
 
 ```text
-~/Library/Application Support/com.almanos.gatorfinance/gatorfinance.sqlite3
+~/Documents/AOS/gatorFi
 ```
-
-ChatGPT and Claude actions are opt-in. The app shows a confirmation, copies a summary without transactions or identifiers to the clipboard, and opens a new chat in the selected provider. Paste with Command-V to review the exact copied text before sending it.
-
-OFX files are bank records. Do not commit real statements, account IDs, card masks, or generated transaction exports to this repository.
-
-## Tech Details
-
-- Desktop shell: Tauri v2.
-- Interface: React, TypeScript, Vite, and locally bundled fonts.
-- Domain engine: Rust.
-- Storage: SQLite in WAL mode through `rusqlite`.
-- Money representation: signed 64-bit integer minor units.
-- Output schema: versioned `.gatorfinance.json` artifacts.
-- Bundle ID: `com.almanos.gatorfinance`.
-- Engine version: `0.4.0-alpha.1`.
-- Minimum macOS version: 12.0.
-
-The original Python implementation remains in `parser/`, `store/`, and `engine/` as a behavioral reference. Rust parity tests preserve the previous `gatorHealth v0.3` result while the app uses corrected v0.4 behavior.
-
-Banco General OFX exports can stamp the declared statement period with the export timestamp. When that period is missing or zero-length, gatorFinance derives it from transaction dates. The ledger balance still reflects export time.
-
-The importer parses each `STMTRS` block independently, so a multi-account OFX cannot leak one account identifier into another statement block. Account profiles, identities, import batches, conflicts, and Smart Lists are managed through versioned SQLite migrations.
-
-## Development
-
-Run the webview and native test suites:
-
-```bash
-pnpm build
-pnpm test:native
-
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements-dev.txt
-python -m pytest
-```
-
-Build a local macOS app:
-
-```bash
-pnpm tauri build --bundles app
-```
-
-Maintainers with the Alman OS Developer ID certificate and `AudioGrabberNotary` keychain profile can produce the verified universal release artifact:
-
-```bash
-pnpm package:macos
-```
-
-The final files are written to `dist/` with a SHA-256 checksum. The script verifies both architectures, signing, app notarization, stapling, mounted-app Gatekeeper assessment, DMG notarization, DMG Gatekeeper assessment, and disk-image integrity.
-
-## Contributing
-
-Focused fixes are welcome. Add sanitized OFX fixtures for new bank variants, keep parser and scoring changes covered by tests, and never submit real financial data. See [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
-
-This repository is source-available so users can inspect local storage and contribute fixes. It does not grant permission to ship competing clones.
-
-## License
-
-This project is source-available under the PolyForm Shield License 1.0.0.
-
-You may read the source, learn from it, and contribute. You may not sell, repackage, white-label, or distribute competing versions of this app without a commercial license.
-
-Commercial licensing: business@alman-os.com
-
-See [LICENSE.md](LICENSE.md).
