@@ -48,6 +48,23 @@ Importa estados de cuenta, corrige la categorización, revisa el flujo de caja m
 
 ## Instalación
 
+### Como pasar información desde Banco General
+
+Este app fue hecho para simplificar la búsqueda de transacciones y poder hacer análisis de tus gastos a lo largo del tiempo.
+Actualmente NO cuenta con ningún enlace MCP o API. Este app NO se conecta al Internet y no recibe información automaticamente.
+Fue diseñado de manera simple con la información que ya esta disponible.
+
+Para proporcionar datos, solamente tienes que acceder a tu portal de Banca en Linea, seleccionar el rango de fechas, oprimir cargar, y luego seleccionar la opción de descargar en formato .OFX
+
+Si puedes añadir varias cuentas que tengas y al app reconocerá las diferentes cuentas y te notificará si hay duplicados para asegurar que la información siempre se mantenga coherente.
+
+**OJO: Si tienes una cuenta de ahorros, aún así el mismo sistema de Banco General lo escribe como si fuera CHECKING/CORRIENTE. Al importar el .OFX te dirá como si es CHECKING/CORRIENTE. El app da la opción de colocar SAVINGS/AHORRO y cualquier nombre especial que le tengas a esa cuenta para fácilmente reconocer y organizar.**
+
+
+<p align="center">
+  <img src="tutorial-guide.png" width="1448" alt="Interfaz de gatorFinance">
+</p>
+
 ### Alpha para macOS
 
 **Requiere:** macOS 12 o posterior. La compilación universal es compatible con Macs Apple Silicon e Intel.
