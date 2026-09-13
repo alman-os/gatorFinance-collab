@@ -56,7 +56,7 @@ Fue diseñado de manera simple con la información que ya esta disponible.
 
 Para proporcionar datos, solamente tienes que acceder a tu portal de Banca en Linea, seleccionar el rango de fechas, oprimir cargar, y luego seleccionar la opción de descargar en formato .OFX
 
-Si puedes añadir varias cuentas que tengas y al app reconocerá las diferentes cuentas y te notificará si hay duplicados para asegurar que la información siempre se mantenga coherente.
+Puedes añadir varias cuentas que tengas. El app reconocerá las diferentes cuentas y te notificará si hay duplicados para asegurar que la información siempre se mantenga coherente.
 
 **OJO: Si tienes una cuenta de ahorros, aún así el mismo sistema de Banco General lo escribe como si fuera CHECKING/CORRIENTE. Al importar el .OFX te dirá como si es CHECKING/CORRIENTE. El app da la opción de colocar SAVINGS/AHORRO y cualquier nombre especial que le tengas a esa cuenta para fácilmente reconocer y organizar.**
 
@@ -131,5 +131,5 @@ Los filtros opcionales incluyen dirección crédito/débito, perfiles de cuenta,
 Los reportes que pueden compartirse se guardan en:
 
 ```text
-~/Documents/AOS/gatorFi
+~/Documents/AOS/gatorFinance
 ```
